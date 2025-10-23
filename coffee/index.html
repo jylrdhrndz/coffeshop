@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Jylly Coffee | Order Your Coffee</title>
+<style>
+  /* Reset */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #fff8f0;
+    color: #4b3b2b;
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Navbar */
+  header.navbar {
+    background: #6f4e37;
+    color: #f3e9dc;
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 3px 8px rgb(0 0 0 / 0.15);
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-weight: 700;
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+  .logo img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid #f3e9dc;
+    object-fit: cover;
+  }
+  nav a {
+    color: #f3e9dc;
+    text-decoration: none;
+    margin-left: 1.5rem;
+    font-weight: 600;
+    transition: color 0.3s ease;
+  }
+  nav a:hover,
+  nav a.active {
+    color: #c9a66b;
+  }
+
+  /* Hero */
+  .hero {
+    background: url('https://images.unsplash.com/photo-1511920170033-f8396924c348?auto=format&fit=crop&w=1400&q=80') no-repeat center center/cover;
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    text-shadow: 0 0 10px rgba(0,0,0,0.7);
+    font-size: 2rem;
+    font-weight: 700;
+    padding: 0 1rem;
+  }
+
+  /* Main sections container */
+  main {
+    flex-grow: 1;
+    padding: 2rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  /* Menu Section */
+  .menu-section h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    border-bottom: 3px solid #c9a66b;
+    padding-bottom: 0.25rem;
+    font-family: 'Georgia', serif;
+  }
+  .menu-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill,minmax(220px,1fr));
+    gap: 1.5rem;
+  }
+  .menu-item {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgb(0 0 0 / 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+  }
+  .menu-item:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 20px rgb(0 0 0 / 0.15);
+  }
+  .menu-item img {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+    border-bottom: 1px solid #eee;
+  }
+  .menu-info {
+    padding: 1rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .menu-info h3 {
+    margin-bottom: 0.5rem;
+    font-family: 'Georgia', serif;
+    color: #6f4e37;
+  }
+  .menu-info p {
+    font-size: 0.9rem;
+    color: #7a6a5b;
+    flex-grow: 1;
+  }
+  .price-order {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+  }
+  .price {
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: #c9a66b;
+  }
+  .order-btn {
+    background-color: #c9a66b;
+    border: none;
+    padding: 0.5rem 1rem;
+    color: #fff;
+    font-weight: 600;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  .order-btn:hover {
+    background-color: #a88a4e;
+  }
+
+  /* Order type */
+  .order-type {
+    margin: 2rem 0 2rem;
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
+  .order-type label {
+    cursor: pointer;
+    user-select: none;
+  }
+  .order-type input[type="radio"] {
+    margin-right: 0.5rem;
+    cursor: pointer;
+  }
+
+  /* Cart Section */
+  .cart-section {
+    background: #f3e9dc;
+    padding: 1.5rem 2rem;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgb(0 0 0 / 0.1);
+    margin-bottom: 3rem;
+  }
+  .cart-section h2 {
+    font-family: 'Georgia', serif;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: #6f4e37;
+  }
+  .cart-list {
+    list-style: none;
+    max-height: 220px;
+    overflow-y: auto;
+    margin-bottom: 1rem;
+  }
+  .cart-list li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #ddd2c6;
+  }
+  .cart-item-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-grow: 1;
+  }
+  .cart-item-info img {
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+    object-fit: cover;
+    border: 1px solid #c9a66b;
+  }
+  .cart-item-details strong {
+    font-size: 1.1rem;
+    color: #4b3b2b;
+  }
+  .cart-item-details small {
+    display: block;
+    font-size: 0.85rem;
+    color: #7a6a5b;
+  }
+  .cart-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .cart-controls button {
+    background: #c9a66b;
+    border: none;
+    color: #fff;
+    font-weight: 700;
+    padding: 0.25rem 0.6rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    line-height: 1;
+    transition: background-color 0.3s ease;
+  }
+  .cart-controls button:hover {
+    background: #a88a4e;
+  }
+  .cart-quantity {
+    min-width: 25px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 1rem;
+    color: #4b3b2b;
+  }
+  .cart-total {
+    font-weight: 700;
+    font-size: 1.3rem;
+    color: #6f4e37;
+    margin-bottom: 1rem;
+    text-align: right;
+  }
+  .checkout-btn {
+    background-color: #6f4e37;
+    color: #fff;
+    font-weight: 700;
+    border: none;
+    width: 100%;
+    padding: 0.8rem;
+    font-size: 1.2rem;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  .checkout-btn:disabled {
+    background-color: #a88a4e;
+    cursor: not-allowed;
+  }
+  .checkout-btn:not(:disabled):hover {
+    background-color: #573b26;
+  }
+
+  /* Order History Section */
+  .order-history-section {
+    max-width: 1100px;
+    margin: 0 auto 3rem;
+    padding: 0 2rem;
+  }
+  .order-history-section h2 {
+    font-family: 'Georgia', serif;
+    font-size: 2rem;
+    color: #6f4e37;
+    margin-bottom: 1rem;
+  }
+  #order-history-list {
+    list-style: none;
+    max-height: 180px;
+    overflow-y: auto;
+    padding-left: 1rem;
+    border-left: 3px solid #c9a66b;
+    color: #4b3b2b;
+  }
+  #order-history-list li {
+    margin-bottom: 0.7rem;
+    font-size: 0.95rem;
+  }
+
+  /* About Section */
+  .university-section {
+    background: #f3e9dc;
+    padding: 2rem;
+    border-radius: 12px;
+    max-width: 1100px;
+    margin: 0 auto 2rem;
+    box-shadow: 0 6px 12px rgb(0 0 0 / 0.1);
+    color: #4b3b2b;
+  }
+  .university-section h2 {
+    font-family: 'Georgia', serif;
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: #6f4e37;
+  }
+  .university-section h3 {
+    margin-top: 1.5rem;
+    margin-bottom: 0.6rem;
+    font-family: 'Georgia', serif;
+    color: #6f4e37;
+  }
+  .university-section p {
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+  .core-values ul {
+    list-style-type: disc;
+    margin-left: 1.5rem;
+  }
+  .core-values li {
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+  }
+
+  /* Footer */
+  footer {
+    background-color: #6f4e37;
+    color: #f3e9dc;
+    text-align: center;
+    padding: 1rem 0;
+    font-size: 0.9rem;
+    margin-top: auto;
+    user-select: none;
+  }
+
+  /* Scrollbar style for cart and history */
+  .cart-list::-webkit-scrollbar,
+  #order-history-list::-webkit-scrollbar {
+    width: 8px;
+  }
+  .cart-list::-webkit-scrollbar-thumb,
+  #order-history-list::-webkit-scrollbar-thumb {
+    background-color: #c9a66b;
+    border-radius: 10px;
+  }
+</style>
+</head>
+<body>
+
+<header class="navbar" role="banner">
+  <div class="logo" tabindex="0" aria-label="Jylly Coffee home link">
+    <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=80&q=80" alt="Coffee cup logo" />
+    <span>Jylly Coffee</span>
+  </div>
+  <nav role="navigation" aria-label="Primary navigation">
+    <a href="#menu" class="active">Menu</a>
+    <a href="#cart">Cart</a>
+    <a href="#about">About</a>
+  </nav>
+</header>
+
+<section class="hero" role="img" aria-label="A cup of latte art coffee">
+  <div class="hero-content">Fresh Coffee Crafted with Love at University</div>
+</section>
+
+<main>
+
+  <section id="menu" class="menu-section" aria-label="Coffee menu">
+    <h2>Our Menu</h2>
+    <div class="menu-container" id="menu-container" role="list">
+      <!-- Menu items inserted here dynamically -->
+    </div>
+  </section>
+
+  <section class="order-type" aria-label="Select order type">
+    <label>
+      <input type="radio" name="orderType" value="Dine In" checked />
+      Dine In
+    </label>
+    <label>
+      <input type="radio" name="orderType" value="Take Out" />
+      Take Out
+    </label>
+  </section>
+
+  <section class="cart-section" id="cart" aria-label="Shopping cart">
+    <h2>Your Cart</h2>
+    <ul class="cart-list" id="cart-list" aria-live="polite" aria-relevant="additions removals"></ul>
+    <div class="cart-total" id="cart-total">Total: $0.00</div>
+    <button class="checkout-btn" id="checkout-btn" disabled>Checkout</button>
+  </section>
+
+  <section class="order-history-section" aria-label="Order history">
+    <h2>Order History</h2>
+    <ul id="order-history-list">
+      <!-- Past orders will appear here -->
+    </ul>
+  </section>
+
+  <section class="university-section" id="about" aria-label="About Jylly Coffee and university info">
+    <h2>About Jylly Coffee & Our University</h2>
+    <h3>Our Story</h3>
+    <p>
+      Founded in 2023, Jylly Coffee began as a humble coffee cart inspired by the rich university culture of thought, innovation, and community. We believe in the magic that a great cup of coffee can spark from all-night study sessions to early morning brainstorming.
+    </p>
+    <h3>University Information</h3>
+    <p>
+      We proudly partner with our local university to provide students and faculty with high-quality, ethically sourced coffee. The university emphasizes sustainable practices and community driven projects.
+    </p>
+    <div class="core-values">
+      <h3>Our Core Values:</h3>
+      <ul>
+        <li>Sustainability and Ethical Sourcing</li>
+        <li>Quality and Craftsmanship</li>
+        <li>Community Engagement</li>
+        <li>Innovation and Education</li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  &copy; 2025 Jylly Coffee — Crafted with love by the university community.
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
